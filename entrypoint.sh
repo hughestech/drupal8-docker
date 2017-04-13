@@ -1,6 +1,7 @@
 #!/bin/bash
 export USER_ID=$(id -u)
 export GROUP_ID=$(id -g)
+DRUPAL_DIR=opensocial/html
 envsubst < /workdir/passwd.template > /tmp/passwd
 export LD_PRELOAD=libnss_wrapper.so
 export NSS_WRAPPER_PASSWD=/tmp/passwd
@@ -18,14 +19,14 @@ if [ ! -d /volume/libraries ]; then
   mkdir -p /volume/libraries
 fi
 
-if [ ! -f /var/www/drupal/robots.txt ]; then
+if [ ! -f /var/www/$DRUPAL_DIR/robots.txt ]; then
   mv -f /workdir/robots.txt /volume/robots.txt
 fi
 
-if [ ! -d /var/www/drupal/sites/default ]; then
+if [ ! -d /var/www/$DRUPAL_DIR/sites/default ]; then
   # Copy initial sites and configuration
-  cp -arf /tmp/sites/* /var/www/drupal/sites/
-  cp /var/www/drupal/sites/example.settings.local.php /var/www/drupal/sites/default/settings.local.php
+  cp -arf /tmp/sites/* /var/www/$DRUPAL_DIR/sites/
+  cp /var/www/$DRUPAL_DIR/sites/example.settings.local.php /var/www/$DRUPAL_DIR/sites/default/settings.local.php
 
   echo "Copying development.services.yml"
   # Download modules
@@ -33,24 +34,24 @@ if [ ! -d /var/www/drupal/sites/default ]; then
   for module in "${modules[@]}"
   do
     echo "Downloading module $module"
-    drush dl $module -y --destination=/var/www/drupal/modules/
+    drush dl $module -y --destination=/var/www/$DRUPAL_DIR/modules/
   done
   # Download themes
   IFS=';' read -r -a themes <<< "$DRUPAL_THEMES"
   for theme in "${themes[@]}"
   do
     echo "Downloading theme $theme"
-    drush dl $theme -y --destination=/var/www/drupal/themes/
+    drush dl $theme -y --destination=/var/www/$DRUPAL_DIR/themes/
   done
 else
   # Run updatedb with drush
   echo "Running drush updb"
-  (cd /var/www/drupal/; drush updb -y)
+  (cd /var/www/www/$DRUPAL_DIR/; drush updb -y)
   # Apply pending entity schema updates
   echo "Running drush entup"
-  (cd /var/www/drupal/; drush entup -y)
+  (cd /var/www/www/$DRUPAL_DIR/; drush entup -y)
   echo "Running drush cr"
-  (cd /var/www/drupal; drush cr)
+  (cd /var/www/$DRUPAL_DIR; drush cr)
 fi
 
 if [ ! -d /volume/default ]; then

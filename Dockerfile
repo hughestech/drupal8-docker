@@ -1,5 +1,8 @@
 FROM jubicoy/nginx-php:php7
-ENV DRUPAL_VERSION 8.2.7
+ARG DRUPAL_VERSION=8.3.0
+ARG DRUPAL_DIR=/var/www/opensocial/html
+
+
 
 RUN apt-get update && \
     apt-get -y install php7.0-fpm php-apcu php7.0-mysql \
@@ -8,14 +11,21 @@ RUN apt-get update && \
     php7.0-common php-pear curl php7.0-json php-redis php-memcache php7.0-mbstring \
     gzip netcat mysql-client wget git
 
-RUN curl -k https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz | tar zx -C /var/www/
-RUN mv /var/www/drupal-${DRUPAL_VERSION} /var/www/drupal
-RUN cp -rf /var/www/drupal/sites/default /tmp/
-RUN cp -f /var/www/drupal/robots.txt /workdir/
+#RUN curl -k https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz | tar zx -C /var/www/
+#RUN mv /var/www/drupal-${DRUPAL_VERSION} /var/www/drupal
+#RUN cp -rf /var/www/drupal/sites/default /tmp/
+#RUN cp -f /var/www/drupal/robots.txt /workdir/
+
+
 
 # Composer for Sabre installation
-ENV COMPOSER_VERSION 1.0.0-alpha11
+ARG COMPOSER_VERSION=1.4.1
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
+
+# Install OpenSocial
+RUN composer create-project goalgorilla/social_template:dev-master /var/www/opensocial --no-interaction
+RUN mkdir /var/www/webdav
+RUN cp ${DRUPAL_DIR}/sites/default/default.settings.php ${DRUPAL_DIR}/sites/default/settings.php
 
 # WebDAV configuration
 RUN apt-get install -y apache2-utils
@@ -27,20 +37,20 @@ ADD sabre/index.php /var/www/webdav/index.php
 RUN cd /var/www/webdav && composer require sabre/dav ~3.1.0 && composer update sabre/dav && cd
 
 # Add configuration files
-ADD config/default.conf /workdir/default.conf
-RUN rm -rf /etc/nginx/conf.d/default.conf && ln -s /volume/conf/default.conf /etc/nginx/conf.d/default.conf
+ADD config/default.conf /etc/nginx/conf.d/default.conf
+#RUN rm -rf /etc/nginx/conf.d/default.conf && ln -s /volume/conf/default.conf /etc/nginx/conf.d/default.conf
 ADD entrypoint.sh /workdir/entrypoint.sh
 
 RUN mkdir /workdir/drupal-config && chmod 777 /workdir/drupal-config
 ADD config/drupal-cache-config/* /workdir/drupal-config/
 
 RUN mkdir /volume && chmod 777 /volume
-RUN rm -rf /var/www/drupal/themes/ && rm -rf /var/www/drupal/modules/ && rm -rf /var/www/drupal/sites/default
-RUN ln -s /volume/themes/ /var/www/drupal/themes
-RUN ln -s /volume/modules/ /var/www/drupal/modules
-RUN ln -s /volume/default/ /var/www/drupal/sites/default
-RUN ln -s /volume/libraries/ /var/www/drupal/libraries
-RUN rm -rf /var/www/drupal/robots.txt && ln -s /volume/robots.txt /var/www/drupal/robots.txt
+#RUN rm -rf /var/www/drupal/themes/ && rm -rf /var/www/drupal/modules/ && rm -rf /var/www/drupal/sites/default
+RUN ln -s /volume/themes/     ${DRUPAL_DIR}/themes
+RUN ln -s /volume/modules/    ${DRUPAL_DIR}/modules
+RUN ln -s /volume/default/    ${DRUPAL_DIR}/default
+RUN ln -s /volume/libraries/  ${DRUPAL_DIR}/libraries
+#RUN rm -rf /var/www/drupal/robots.txt && ln -s /volume/robots.txt /var/www/drupal/robots.txt
 
 ADD config/nginx.conf /etc/nginx/nginx.conf
 
