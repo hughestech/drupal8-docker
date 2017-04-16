@@ -5,7 +5,7 @@ ARG DRUPAL_DIR=/var/www/opensocial/html
 
 
 RUN apt-get update && \
-    apt-get -y install php7.0-fpm php-apcu php7.0-mysql \
+    apt-get -y install php7.0-fpm php-apcu php7.0-mysql php7.0-curl php-xml \
     php-imagick php7.0-imap php7.0-mcrypt php7.0-curl php7.0-dev \
     php7.0-cli php7.0-gd php7.0-pgsql php7.0-sqlite php7.0-zip \
     php7.0-common php-pear curl php7.0-json php-redis php-memcache php7.0-mbstring \
