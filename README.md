@@ -6,8 +6,9 @@ To install the templates run  `oc create -f <templatename>`.
 
 ### OpenSocial
 
- `docker build --build-arg DRUPAL_INSTALL_DIR=/var/www/opensocial DOC_ROOT=/html COMPOSER_PROJECT=goalgorilla/social_template:dev-master`
+ `docker build . --build-arg DRUPAL_INSTALL_DIR=/var/www/opensocial --build-arg DOC_ROOT=/html --build-arg COMPOSER_PROJECT=goalgorilla/social_template:dev-master Dockerfile`
 
 ### Lightning
 
-  `docker build --build-arg DRUPAL_INSTALL_DIR=/var/www/lighning DOC_ROOT=/docroot  COMPOSER_PROJECT=acquia/lightning-project`
+  `docker build . --build-arg DRUPAL_INSTALL_DIR=/var/www/lighning --build-arg DOC_ROOT=/docroot  --build-arg COMPOSER_PROJECT=acquia/lightning-project
+`
