@@ -1,6 +1,7 @@
 FROM jubicoy/nginx-php:php7
 ARG DRUPAL_VERSION=8.3.0
-ARG DRUPAL_DIR=/var/www/opensocial/html
+ARG DRUPAL_INSTALL_DIR=/var/www/opensocial
+ARG DOC_ROOT=/html
 
 
 
@@ -23,9 +24,9 @@ ARG COMPOSER_VERSION=1.4.1
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
 
 # Install OpenSocial
-RUN composer create-project goalgorilla/social_template:dev-master /var/www/opensocial --no-interaction
+RUN composer create-project goalgorilla/social_template:dev-master ${DRUPAL_INSTALL_DIR} --no-interaction
 RUN mkdir /var/www/webdav
-RUN cp ${DRUPAL_DIR}/sites/default/default.settings.php ${DRUPAL_DIR}/sites/default/settings.php
+RUN cp ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/sites/default/default.settings.php ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/sites/default/settings.php
 
 # WebDAV configuration
 RUN apt-get install -y apache2-utils
@@ -46,10 +47,10 @@ ADD config/drupal-cache-config/* /workdir/drupal-config/
 
 RUN mkdir /volume && chmod 777 /volume
 #RUN rm -rf /var/www/drupal/themes/ && rm -rf /var/www/drupal/modules/ && rm -rf /var/www/drupal/sites/default
-RUN ln -s /volume/themes/     ${DRUPAL_DIR}/themes
-RUN ln -s /volume/modules/    ${DRUPAL_DIR}/modules
-RUN ln -s /volume/default/    ${DRUPAL_DIR}/default
-RUN ln -s /volume/libraries/  ${DRUPAL_DIR}/libraries
+RUN ln -s /volume/themes/     ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/themes
+RUN ln -s /volume/modules/    ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/modules
+RUN ln -s /volume/default/    ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/default
+RUN ln -s /volume/libraries/  ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/libraries
 #RUN rm -rf /var/www/drupal/robots.txt && ln -s /volume/robots.txt /var/www/drupal/robots.txt
 
 ADD config/nginx.conf /etc/nginx/nginx.conf
