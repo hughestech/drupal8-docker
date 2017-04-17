@@ -41,7 +41,9 @@ RUN cd /var/www/webdav && composer require sabre/dav ~3.1.0 && composer update s
 # Add configuration files
 ADD config/default.conf /etc/nginx/conf.d/default.conf
 #RUN rm -rf /etc/nginx/conf.d/default.conf && ln -s /volume/conf/default.conf /etc/nginx/conf.d/default.conf
+
 ADD entrypoint.sh /workdir/entrypoint.sh
+RUN sed -i 's/drupaldir/${DRUPAL_INSTALL_DIR}${DOC_ROOT}/g' /workdir/entrypoint.sh
 
 RUN mkdir /workdir/drupal-config && chmod 777 /workdir/drupal-config
 ADD config/drupal-cache-config/* /workdir/drupal-config/
@@ -55,6 +57,8 @@ RUN ln -s /volume/libraries/  ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/libraries
 #RUN rm -rf /var/www/drupal/robots.txt && ln -s /volume/robots.txt /var/www/drupal/robots.txt
 
 ADD config/nginx.conf /etc/nginx/nginx.conf
+
+
 
 RUN chown -R 104:0 /var/www && chmod -R g+rw /var/www && \
     chmod a+x /workdir/entrypoint.sh && chmod g+rw /workdir
