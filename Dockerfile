@@ -2,6 +2,7 @@ FROM jubicoy/nginx-php:php7
 ARG DRUPAL_VERSION=8.3.0
 ARG DRUPAL_INSTALL_DIR=/var/www/opensocial
 ARG DOC_ROOT=/html
+ARG COMPOSER_PROJECT=goalgorilla/social_template:dev-master
 
 
 
@@ -24,7 +25,7 @@ ARG COMPOSER_VERSION=1.4.1
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
 
 # Install OpenSocial
-RUN composer create-project goalgorilla/social_template:dev-master ${DRUPAL_INSTALL_DIR} --no-interaction
+RUN composer create-project ${COMPOSER_PROJECT} ${DRUPAL_INSTALL_DIR} --no-interaction
 RUN mkdir /var/www/webdav
 RUN cp ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/sites/default/default.settings.php ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/sites/default/settings.php
 
