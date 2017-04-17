@@ -5,7 +5,7 @@
     "name": "drupal8-mysql-webdav",
     "creationTimestamp": null,
     "annotations": {
-      "description": "Drupal 8 with persistent storage and MySQL as database. Data exchange using WebDAV.",
+      "description": "OpenSocial with persistent storage and MySQL as database. Data exchange using WebDAV.",
       "iconClass": "icon-php",
       "tags": "instant-app,mysql,drupal8,webdav"
     }
