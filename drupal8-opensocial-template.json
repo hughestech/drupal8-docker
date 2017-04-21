@@ -2,7 +2,7 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "drupal8-mysql-webdav",
+    "name": "drupal8-opensocial-webdav",
     "creationTimestamp": null,
     "annotations": {
       "description": "OpenSocial with persistent storage and MySQL as database. Data exchange using WebDAV.",
@@ -15,7 +15,7 @@
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${DRUPAL_SERVICE_NAME}-web",
+        "name": "${NAMESPACE}-${DRUPAL_SERVICE_NAME}-web",
         "creationTimestamp": null
       },
       "spec": {
@@ -40,7 +40,7 @@
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
-        "name": "${DRUPAL_SERVICE_NAME}-db",
+        "name": "${NAMESPACE}-${DRUPAL_SERVICE_NAME}-db",
         "creationTimestamp": null
       },
       "spec": {

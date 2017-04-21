@@ -2,7 +2,7 @@
   "kind": "Template",
   "apiVersion": "v1",
   "metadata": {
-    "name": "drupal8-mysql-webdav",
+    "name": "drupal8-lightspeed",
     "creationTimestamp": null,
     "annotations": {
       "description": "Drupal 8 Lightning with persistent storage and MySQL as database. Data exchange using WebDAV.",

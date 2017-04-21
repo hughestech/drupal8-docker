@@ -43,7 +43,8 @@ ADD config/default.conf /etc/nginx/conf.d/default.conf
 #RUN rm -rf /etc/nginx/conf.d/default.conf && ln -s /volume/conf/default.conf /etc/nginx/conf.d/default.conf
 
 ADD entrypoint.sh /workdir/entrypoint.sh
-RUN sed -i 's/drupaldir/${DRUPAL_INSTALL_DIR}${DOC_ROOT}/g' /workdir/entrypoint.sh
+#TODO - should use vairables
+#RUN sed -i 's/drupaldir/${DRUPAL_INSTALL_DIR}${DOC_ROOT}/g' /workdir/entrypoint.sh
 
 RUN mkdir /workdir/drupal-config && chmod 777 /workdir/drupal-config
 ADD config/drupal-cache-config/* /workdir/drupal-config/
