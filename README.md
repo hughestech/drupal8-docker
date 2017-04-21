@@ -6,7 +6,8 @@ To install the templates run  `oc create -f <templatename>`.
 
 Currently the following places need to be manually changed, based on installation directory:
 
-config/default.conf
+* config/default.conf
+* entrypoint.sh
 
 eg,
 
