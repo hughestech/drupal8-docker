@@ -11,7 +11,7 @@ RUN apt-get update && \
     php-imagick php7.0-imap php7.0-mcrypt php7.0-curl php7.0-dev \
     php7.0-cli php7.0-gd php7.0-pgsql php7.0-sqlite php7.0-zip \
     php7.0-common php-pear curl php7.0-json php-redis php-memcache php7.0-mbstring \
-    gzip netcat mysql-client wget git
+    gzip netcat mysql-client wget git sshfs
 
 #RUN curl -k https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz | tar zx -C /var/www/
 #RUN mv /var/www/drupal-${DRUPAL_VERSION} /var/www/drupal
@@ -23,6 +23,13 @@ RUN apt-get update && \
 # Composer for Sabre installation
 ARG COMPOSER_VERSION=1.4.1
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
+
+
+
+
+
+# Install drush
+RUN composer global require drush/drush
 
 # Install OpenSocial
 RUN composer create-project ${COMPOSER_PROJECT} ${DRUPAL_INSTALL_DIR} --no-interaction
@@ -36,7 +43,7 @@ ADD config/webdav.conf /etc/nginx/conf.d/webdav.conf
 ADD sabre/index.php /var/www/webdav/index.php
 
 # Sabre with composer
-RUN cd /var/www/webdav && composer require sabre/dav ~3.1.0 && composer update sabre/dav && cd
+RUN cd /var/www/webdav && composer require sabre/dav ~3.2.2 && composer update sabre/dav && cd
 
 # Add configuration files
 ADD config/default.conf /etc/nginx/conf.d/default.conf
@@ -72,8 +79,8 @@ RUN chmod a+x /workdir/mailchimp-ca.sh && bash /workdir/mailchimp-ca.sh
 RUN update-ca-certificates
 
 # Install drush
-ADD drush/drush_install.sh /workdir/drush_install.sh
-RUN chmod a+x /workdir/drush_install.sh && bash /workdir/drush_install.sh
+#ADD drush/drush_install.sh /workdir/drush_install.sh
+#RUN chmod a+x /workdir/drush_install.sh && bash /workdir/drush_install.sh
 
 # Install jsmin php extension
 RUN git clone -b feature/php7 https://github.com/sqmk/pecl-jsmin.git /workdir/pecl-jsmin

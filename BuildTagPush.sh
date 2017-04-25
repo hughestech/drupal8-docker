@@ -14,12 +14,14 @@ REGISTRY="$(minishift openshift registry)"
 
 eval $(minishift docker-env)
 docker login -u developer -p $(oc whoami -t) ${REGISTRY}
-docker build -t ${REGISTRY}/${IMAGE_NAME}  --build-arg DRUPAL_INSTALL_DIR=/var/www/lightning --build-arg DOC_ROOT=/docroot  --build-arg COMPOSER_PROJECT=acquia/lightning-project .
+docker build -t ${REGISTRY}/${IMAGE_NAME} --build-arg DRUPAL_INSTALL_DIR=/var/www/lightning --build-arg DOC_ROOT=/docroot  --build-arg COMPOSER_PROJECT=acquia/lightning-project .
 
-docker tag  ${REGISTRY}/${IMAGE_NAME}         ${REGISTRY}/${IMAGE_NAME}:latest
+docker tag  ${REGISTRY}/${IMAGE_NAME}          ${REGISTRY}/myproject
 #docker push ${REGISTRY}/${IMAGE_NAME}
-docker tag  ${REGISTRY}/${IMAGE_NAME}:latest  ${REGISTRY}/${IMAGE_NAME}
-docker login -u developer -p $(oc whoami -t) ${REGISTRY}
+#docker tag  ${REGISTRY}/${IMAGE_NAME}:latest   ${REGISTRY}/${IMAGE_NAME}
+oc whoami -t
+docker login -u developer -p $(oc whoami -t)   ${REGISTRY}
 echo "minishift ip is "
 minishift ip
-docker push ${REGISTRY}/${IMAGE_NAME}
+
+docker push ${REGISTRY}/myproject

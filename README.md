@@ -23,3 +23,30 @@ eg,
 `
 RUN sed -i "s/drupaldir/${DRUPAL_INSTALL_DIR}${DOC_ROOT}/g" /workdir/entrypoint.sh
 RUN sed -i 's/drupaldir/${DRUPAL_INSTALL_DIR}${DOC_ROOT}/g' /workdir/entrypoint.sh
+
+
+oc volume dc --all
+oc volume dc/nginx --add --claim-size 512M --mount-path /usr/share/nginx/html --name downloads
+
+## Use MiniShift
+
+Run `eval $(minishift docker-env)` to use the docker engine that comes with Minishift.
+Then run the docker build commands above.
+
+ `minishift start --insecure-registry IP:5000 --insecure-registry 172.30.0.0/16`
+
+ `$ minishift start --openshift-version=v1.5.0
+$ eval $(minishift docker-env)`
+
+Login with ` oc login`
+
+       `docker login -u developer -p $(oc whoami -t) $(minishift openshift registry)`
+`
+$ OPENSHIFT_TOKEN=$(oc whoami -t)
+$ docker login -u developer -p ${OPENSHIFT_TOKEN} <ip address>:5000 `
+
+Find the ip address with     `minishift ip`.
+
+
+ `$ docker tag busybox 172.30.1.1:5000/hughestech/lightning
+$ docker push 172.30.1.1:5000/hughestech/lightning`
