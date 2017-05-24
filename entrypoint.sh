@@ -7,6 +7,8 @@ export LD_PRELOAD=libnss_wrapper.so
 export NSS_WRAPPER_PASSWD=/tmp/passwd
 export NSS_WRAPPER_GROUP=/etc/group
 
+echo "HELLO WORLD!"
+
 if [ ! -d /volume/themes ]; then
   mkdir -p /volume/themes
 fi
@@ -23,6 +25,18 @@ if [ ! -f $DRUPAL_DIR/robots.txt ]; then
   mv -f /workdir/robots.txt /volume/robots.txt
 fi
 
+echo "installing drupal"
+cd $DRUPAL_DIR
+if  drush status bootstrap | grep -q Successful
+then
+    # drush -y site-install --db-url=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${DRUPAL_SERVICE_NAME}-db/$MYSQL_DATABASE -r $DRUPAL_DIR
+    drush -y site-install --db-url=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${DRUPAL_SERVICE_NAME}-db/$MYSQL_DATABASE
+else
+    # code if not found
+fi
+
+
+echo "Drupal Installed"
 if [ ! -d $DRUPAL_DIR/sites/default ]; then
   # Copy initial sites and configuration
   cp -arf /tmp/sites/* $DRUPAL_DIR/sites/
@@ -45,12 +59,13 @@ if [ ! -d $DRUPAL_DIR/sites/default ]; then
   done
 else
   # Run updatedb with drush
-  echo "Running drush updb"
+  echo "HELLO WORLD"
+  echo "Running drush updb - !!!"
   (cd $DRUPAL_DIR/; drush updb -y)
   # Apply pending entity schema updates
-  echo "Running drush entup"
+  echo "Running drush entup - !!!"
   (cd $DRUPAL_DIR/; drush entup -y)
-  echo "Running drush cr"
+  echo "Running drush cr - !!!"
   (cd $DRUPAL_DIR; drush cr)
 fi
 
