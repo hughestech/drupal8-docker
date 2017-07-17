@@ -10,9 +10,11 @@ CURRENT_DIR="${PWD##*/}"
 IMAGE_NAME="$TAG"
 
 
-REGISTRY="$(minishift openshift registry)"
+
 
 minishift start --openshift-version=v1.5.0 --iso-url https://github.com/minishift/minishift-centos-iso/releases/download/v1.0.0/minishift-centos7.iso
+
+REGISTRY="$(minishift openshift registry)"
 
 eval $(minishift docker-env)
 docker login -u developer -p $(oc whoami -t) ${REGISTRY}
