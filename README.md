@@ -15,7 +15,7 @@ eg,
 
 ### OpenSocial
 
- `docker build . --build-arg DRUPAL_INSTALL_DIR=/var/www/opensocial --build-arg DOC_ROOT=/html --build-arg COMPOSER_PROJECT=goalgorilla/social_template:dev-master Dockerfile`
+ `docker build . --build-arg DRUPAL_INSTALL_DIR=/var/www/opensocial --build-arg DOC_ROOT=/html --build-arg COMPOSER_PROJECT=hughestech/social_template:master Dockerfile`
 
 ### Lightning
 
