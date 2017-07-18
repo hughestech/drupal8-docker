@@ -32,12 +32,13 @@ then
     # drush -y site-install --db-url=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${DRUPAL_SERVICE_NAME}-db/$MYSQL_DATABASE -r $DRUPAL_DIR
     echo "Install Drupal"
     drush -y site-install --db-url=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${DRUPAL_SERVICE_NAME}-db/$MYSQL_DATABASE
+    echo "Drupal Installed"
 else
-    # code if not found
+    echo "drush status :: Not Successful"
 fi
 
 
-echo "Drupal Installed"
+
 if [ ! -d $DRUPAL_DIR/sites/default ]; then
   # Copy initial sites and configuration
   cp -arf /tmp/sites/* $DRUPAL_DIR/sites/
