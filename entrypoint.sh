@@ -7,7 +7,7 @@ export LD_PRELOAD=libnss_wrapper.so
 export NSS_WRAPPER_PASSWD=/tmp/passwd
 export NSS_WRAPPER_GROUP=/etc/group
 
-echo "HELLO WORLD!"
+
 
 if [ ! -d /volume/themes ]; then
   mkdir -p /volume/themes
@@ -21,15 +21,16 @@ if [ ! -d /volume/libraries ]; then
   mkdir -p /volume/libraries
 fi
 
-if [ ! -f $DRUPAL_DIR/robots.txt ]; then
-  mv -f /workdir/robots.txt /volume/robots.txt
-fi
+#if [ ! -f $DRUPAL_DIR/robots.txt ]; then
+#  mv -f /workdir/robots.txt /volume/robots.txt
+#fi
 
-echo "installing drupal"
+echo "CD to Drupal directory"
 cd $DRUPAL_DIR
 if  drush status bootstrap | grep -q Successful
 then
     # drush -y site-install --db-url=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${DRUPAL_SERVICE_NAME}-db/$MYSQL_DATABASE -r $DRUPAL_DIR
+    echo "Install Drupal"
     drush -y site-install --db-url=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${DRUPAL_SERVICE_NAME}-db/$MYSQL_DATABASE
 else
     # code if not found
