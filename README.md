@@ -19,8 +19,8 @@ eg,
 
 ### Lightning
 
-  `docker build . --build-arg DRUPAL_INSTALL_DIR=/var/www/lightning --build-arg DOC_ROOT=/docroot  --build-arg COMPOSER_PROJECT=acquia/lightning-project
-`
+  `docker build . --build-arg DRUPAL_INSTALL_DIR=/var/www/lightning --build-arg DOC_ROOT=/docroot  --build-arg COMPOSER_PROJECT=acquia/lightning-project Dockerfile`
+
 RUN sed -i "s/drupaldir/${DRUPAL_INSTALL_DIR}${DOC_ROOT}/g" /workdir/entrypoint.sh
 RUN sed -i 's/drupaldir/${DRUPAL_INSTALL_DIR}${DOC_ROOT}/g' /workdir/entrypoint.sh
 
@@ -46,7 +46,3 @@ $ OPENSHIFT_TOKEN=$(oc whoami -t)
 $ docker login -u developer -p ${OPENSHIFT_TOKEN} <ip address>:5000 `
 
 Find the ip address with     `minishift ip`.
-
-
- `$ docker tag busybox 172.30.1.1:5000/hughestech/lightning
-$ docker push 172.30.1.1:5000/hughestech/lightning`
