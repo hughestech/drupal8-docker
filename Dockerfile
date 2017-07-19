@@ -1,17 +1,13 @@
-FROM jubicoy/nginx-php:php7
+FROM wodby/drupal-php:7.1
 ARG DRUPAL_VERSION=8.3.0
+ARG PHP_VERSION=8.3.0
 ARG DRUPAL_INSTALL_DIR=/var/www/opensocial
 ARG DOC_ROOT=/html
 ARG COMPOSER_PROJECT=hughestech/social_template:dev-master
 
 
 
-RUN apt-get update && \
-    apt-get -y install php7.0-fpm php-apcu php7.0-mysql php7.0-curl php-xml \
-    php-imagick php7.0-imap php7.0-mcrypt php7.0-curl php7.0-dev \
-    php7.0-cli php7.0-gd php7.0-pgsql php7.0-sqlite php7.0-zip \
-    php7.0-common php-pear curl php7.0-json php-redis php-memcache php7.0-mbstring \
-    gzip netcat mysql-client wget git sshfs
+
 
 #RUN curl -k https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz | tar zx -C /var/www/
 #RUN mv /var/www/drupal-${DRUPAL_VERSION} /var/www/drupal
@@ -24,12 +20,29 @@ RUN apt-get update && \
 ARG COMPOSER_VERSION=1.4.2
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
 
+
+
+
+
+# Install drush
+#RUN composer global require drush/drush
+#RUN whereis drush #  NO RESULT
+
+#ENV PATH="$HOME/.composer/vendor/bin:${PATH}" #  NOT WORKING
+
+#RUN composer global require webflo/drush-shim
+# RUN export PATH="$HOME/.config/composer/vendor/bin:$PATH" #  NOT WORKING
+
+#RUN curl -sS http://files.drush.org/drush.phar /usr/local/bin/drush #  NOT WORKING
+
+
+
 # Install OpenSocial
 RUN composer create-project ${COMPOSER_PROJECT} ${DRUPAL_INSTALL_DIR} --no-interaction
 RUN mkdir /var/www/webdav
 RUN cp ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/sites/default/default.settings.php ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/sites/default/settings.php
 
-# Verify that Drush/shim works
+# Verify that Drush works
 RUN drush status
 
 # WebDAV configuration
