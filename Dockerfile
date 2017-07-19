@@ -9,13 +9,6 @@ ARG COMPOSER_PROJECT=hughestech/social_template:dev-master
 
 
 
-#RUN curl -k https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz | tar zx -C /var/www/
-#RUN mv /var/www/drupal-${DRUPAL_VERSION} /var/www/drupal
-#RUN cp -rf /var/www/drupal/sites/default /tmp/
-#RUN cp -f /var/www/drupal/robots.txt /workdir/
-
-
-
 # Composer for Sabre installation
 ARG COMPOSER_VERSION=1.4.2
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
@@ -23,22 +16,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 
 
-
-# Install drush
-#RUN composer global require drush/drush
-#RUN whereis drush #  NO RESULT
-
-#ENV PATH="$HOME/.composer/vendor/bin:${PATH}" #  NOT WORKING
-
-#RUN composer global require webflo/drush-shim
-# RUN export PATH="$HOME/.config/composer/vendor/bin:$PATH" #  NOT WORKING
-
-#RUN curl -sS http://files.drush.org/drush.phar /usr/local/bin/drush #  NOT WORKING
-
-
-
-# Install OpenSocial
-RUN composer create-project ${COMPOSER_PROJECT} ${DRUPAL_INSTALL_DIR} --no-interaction
+# Install Drupal project
+RUN composer create-project ${COMPOSER_PROJECT} ${DRUPAL_INSTALL_DIR} --no-interaction --stability dev
 RUN mkdir /var/www/webdav
 RUN cp ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/sites/default/default.settings.php ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/sites/default/settings.php
 
@@ -87,9 +66,7 @@ ADD mailchimp-ca.sh /workdir/mailchimp-ca.sh
 RUN chmod a+x /workdir/mailchimp-ca.sh && bash /workdir/mailchimp-ca.sh
 RUN update-ca-certificates
 
-# Install drush
-#ADD drush/drush_install.sh /workdir/drush_install.sh
-#RUN chmod a+x /workdir/drush_install.sh && bash /workdir/drush_install.sh
+
 
 # Install jsmin php extension
 RUN git clone -b feature/php7 https://github.com/sqmk/pecl-jsmin.git /workdir/pecl-jsmin
