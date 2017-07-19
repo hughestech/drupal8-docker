@@ -25,11 +25,6 @@ ARG COMPOSER_VERSION=1.4.2
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
 
 
-
-
-
-# Install drush
-RUN composer global require drush/drush:dev-master
 # Verify that Drush works
 RUN drush status
 
