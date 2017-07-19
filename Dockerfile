@@ -21,7 +21,7 @@ RUN apt-get update && \
 
 
 # Composer for Sabre installation
-ARG COMPOSER_VERSION=1.4.1
+ARG COMPOSER_VERSION=1.4.2
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
 
 
@@ -29,7 +29,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 
 # Install drush
-RUN composer global require drush/drush
+RUN composer global require drush/drush:dev-master
+# Verify that Drush works
+RUN drush status
 
 # Install OpenSocial
 RUN composer create-project ${COMPOSER_PROJECT} ${DRUPAL_INSTALL_DIR} --no-interaction
