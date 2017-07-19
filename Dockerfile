@@ -5,6 +5,12 @@ ARG DRUPAL_INSTALL_DIR=/var/www/opensocial
 ARG DOC_ROOT=/html
 ARG COMPOSER_PROJECT=hughestech/social_template:dev-master
 
+RUN set -xe && \
+
+
+
+    apk add --update nginx
+
 
 
 
