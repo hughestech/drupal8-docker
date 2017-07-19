@@ -75,10 +75,10 @@ RUN update-ca-certificates
 
 
 # Install jsmin php extension
-RUN git clone -b feature/php7 https://github.com/sqmk/pecl-jsmin.git /workdir/pecl-jsmin
-RUN (cd /workdir/pecl-jsmin && phpize && ./configure && make install clean)
-RUN touch /etc/php/7.0/cli/conf.d/20-jsmin.ini && echo 'extension="jsmin.so"' >> /etc/php/7.0/cli/conf.d/20-jsmin.ini
-RUN echo 'extension="jsmin.so"' >> /etc/php/7.0/fpm/php.ini
+#RUN git clone -b feature/php7 https://github.com/sqmk/pecl-jsmin.git /workdir/pecl-jsmin
+#RUN (cd /workdir/pecl-jsmin && phpize && ./configure && make install clean)
+#RUN touch /etc/php/7.0/cli/conf.d/20-jsmin.ini && echo 'extension="jsmin.so"' >> /etc/php/7.0/cli/conf.d/20-jsmin.ini
+#RUN echo 'extension="jsmin.so"' >> /etc/php/7.0/fpm/php.ini
 
 # PHP max upload size
 RUN sed -i '/upload_max_filesize/c\upload_max_filesize = 250M' /etc/php/7.0/fpm/php.ini
