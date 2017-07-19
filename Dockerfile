@@ -6,10 +6,9 @@ ARG DOC_ROOT=/html
 ARG COMPOSER_PROJECT=hughestech/social_template:dev-master
 
 RUN set -xe && \
-
-
-
     apk add --update nginx
+
+
 
 
 
@@ -65,6 +64,9 @@ ADD config/nginx.conf /etc/nginx/nginx.conf
 RUN chown -R 104:0 /var/www && chmod -R g+rw /var/www && \
     chmod a+x /workdir/entrypoint.sh && chmod g+rw /workdir
 
+RUN chown -Rv nginx:nginx /var/www
+
+
 VOLUME ["/volume"]
 
 # Additional CA certificate bundle (Mozilla)
@@ -89,15 +91,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
 
-RUN set -xe && \
-  groupadd -g 107 nginx \
-  && useradd -u 104 -g 107 -m -s /bin/bash nginx \
-  && mkdir -p /run/nginx /var/cache/nginx \
-  && /usr/libexec/fix-permissions /run/nginx \
-  && /usr/libexec/fix-permissions /var/cache/nginx \
-  && /usr/libexec/fix-permissions /var/lib/nginx \
-  && /usr/libexec/fix-permissions /etc/nginx \
-  && /usr/libexec/fix-permissions /var/log/nginx
+
 
 EXPOSE 5000
 EXPOSE 5005
