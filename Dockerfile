@@ -84,6 +84,20 @@ RUN update-ca-certificates
 #RUN sed -i '/upload_max_filesize/c\upload_max_filesize = 250M' /etc/php/7.0/fpm/php.ini
 #RUN sed -i '/post_max_size/c\post_max_size = 250M' /etc/php/7.0/fpm/php.ini
 
+# forward request and error logs to docker log collector
+RUN ln -sf /dev/stdout /var/log/nginx/access.log
+RUN ln -sf /dev/stderr /var/log/nginx/error.log
+
+ADD root /
+RUN groupadd -g 107 nginx \
+  && useradd -u 104 -g 107 -m -s /bin/bash nginx \
+  && mkdir -p /run/nginx /var/cache/nginx \
+  && /usr/libexec/fix-permissions /run/nginx \
+  && /usr/libexec/fix-permissions /var/cache/nginx \
+  && /usr/libexec/fix-permissions /var/lib/nginx \
+  && /usr/libexec/fix-permissions /etc/nginx \
+  && /usr/libexec/fix-permissions /var/log/nginx
+
 EXPOSE 5000
 EXPOSE 5005
 
