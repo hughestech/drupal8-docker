@@ -81,8 +81,8 @@ RUN update-ca-certificates
 #RUN echo 'extension="jsmin.so"' >> /etc/php/7.0/fpm/php.ini
 
 # PHP max upload size
-RUN sed -i '/upload_max_filesize/c\upload_max_filesize = 250M' /etc/php/7.0/fpm/php.ini
-RUN sed -i '/post_max_size/c\post_max_size = 250M' /etc/php/7.0/fpm/php.ini
+#RUN sed -i '/upload_max_filesize/c\upload_max_filesize = 250M' /etc/php/7.0/fpm/php.ini
+#RUN sed -i '/post_max_size/c\post_max_size = 250M' /etc/php/7.0/fpm/php.ini
 
 EXPOSE 5000
 EXPOSE 5005
