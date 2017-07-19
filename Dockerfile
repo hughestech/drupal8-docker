@@ -25,10 +25,10 @@ RUN cp ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/sites/default/default.settings.php ${DRU
 RUN drush status
 
 # WebDAV configuration
-RUN apt-get install -y apache2-utils
-RUN mkdir -p /var/www/webdav && mkdir -p /var/www/webdav/locks && chmod -R 777 /var/www/webdav/locks
-ADD config/webdav.conf /etc/nginx/conf.d/webdav.conf
-ADD sabre/index.php /var/www/webdav/index.php
+#RUN apt-get install -y apache2-utils
+#RUN mkdir -p /var/www/webdav && mkdir -p /var/www/webdav/locks && chmod -R 777 /var/www/webdav/locks
+#ADD config/webdav.conf /etc/nginx/conf.d/webdav.conf
+#ADD sabre/index.php /var/www/webdav/index.php
 
 # Sabre with composer
 RUN cd /var/www/webdav && composer require sabre/dav ~3.2.2 && composer update sabre/dav && cd
