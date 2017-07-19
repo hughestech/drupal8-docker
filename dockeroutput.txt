@@ -1,2 +1,0 @@
-Sending build context to Docker daemon    193kB
-Step 1/42 : FROM wodby/drupal-php:7.1-2.4.4
