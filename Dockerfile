@@ -89,7 +89,8 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log
 RUN ln -sf /dev/stderr /var/log/nginx/error.log
 
 
-RUN groupadd -g 107 nginx \
+RUN set -xe && \
+  groupadd -g 107 nginx \
   && useradd -u 104 -g 107 -m -s /bin/bash nginx \
   && mkdir -p /run/nginx /var/cache/nginx \
   && /usr/libexec/fix-permissions /run/nginx \
