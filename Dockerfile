@@ -24,19 +24,13 @@ RUN apt-get update && \
 ARG COMPOSER_VERSION=1.4.2
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
 
-
-
-
-
-# Install drush
-RUN composer global require drush/drush:dev-master
-# Verify that Drush works
-RUN drush status
-
 # Install OpenSocial
 RUN composer create-project ${COMPOSER_PROJECT} ${DRUPAL_INSTALL_DIR} --no-interaction
 RUN mkdir /var/www/webdav
 RUN cp ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/sites/default/default.settings.php ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/sites/default/settings.php
+
+# Verify that Drush/shim works
+RUN drush status
 
 # WebDAV configuration
 RUN apt-get install -y apache2-utils
