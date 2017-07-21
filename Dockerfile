@@ -31,7 +31,7 @@ RUN mkdir /var/www/webdav
 RUN cp ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/sites/default/default.settings.php ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/sites/default/settings.php
 
 # Verify that Drush/shim works
-RUN /usr/local/bin/drush status
+RUN drush status
 
 # WebDAV configuration
 RUN apt-get install -y apache2-utils
