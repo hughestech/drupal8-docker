@@ -23,6 +23,7 @@ RUN apt-get update && \
 # Composer for Sabre installation
 ARG COMPOSER_VERSION=1.4.2
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION}
+ENV PATH /usr/local/bin:$PATH
 
 # Install OpenSocial
 RUN composer create-project ${COMPOSER_PROJECT} ${DRUPAL_INSTALL_DIR} --no-interaction
