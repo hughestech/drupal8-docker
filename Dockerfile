@@ -30,8 +30,7 @@ RUN composer create-project ${COMPOSER_PROJECT} ${DRUPAL_INSTALL_DIR} --no-inter
 RUN mkdir /var/www/webdav
 RUN cp ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/sites/default/default.settings.php ${DRUPAL_INSTALL_DIR}${DOC_ROOT}/sites/default/settings.php
 
-# Verify that Drush/shim works
-#RUN drush status #/bin/sh: 1: drush: not found
+
 
 
 # WebDAV configuration
@@ -77,8 +76,11 @@ RUN chmod a+x /workdir/mailchimp-ca.sh && bash /workdir/mailchimp-ca.sh
 RUN update-ca-certificates
 
 # Install drush
-#ADD drush/drush_install.sh /workdir/drush_install.sh
-#RUN chmod a+x /workdir/drush_install.sh && bash /workdir/drush_install.sh
+ADD drush/drush_install.sh /workdir/drush_install.sh
+RUN chmod a+x /workdir/drush_install.sh && bash /workdir/drush_install.sh
+
+# Verify that Drush/shim works
+RUN drush status 
 
 # Install jsmin php extension
 RUN git clone -b feature/php7 https://github.com/sqmk/pecl-jsmin.git /workdir/pecl-jsmin
